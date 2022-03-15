@@ -1,0 +1,4 @@
+cmake-build*/
+.codelite/
+compile_flags.txt
+build/
