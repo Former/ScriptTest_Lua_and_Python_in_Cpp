@@ -6,12 +6,12 @@
 
 TEST(SPEEDTEST, Lua_init)
 {
-	lua script;
+	LuaScript script;
 }
 
 TEST(SPEEDTEST, Lua_for10kin10k)
 {
-	lua script;
+	LuaScript script;
 	std::string test =
  		"local i, j = 0, 0;\n"
  		"summ = 0;\n"
@@ -22,15 +22,15 @@ TEST(SPEEDTEST, Lua_for10kin10k)
  		"		summ = summ + i - j;\n"
  		"	end	\n"
 		"end\n";
-	script.exec(test.c_str());
-	
-	int summ = script.get_variable<lua::int_arg_t>("summ").value();
+	script.Execute(test.c_str());
+
+	int summ = script.GetVariable<LuaScript::Int_LuaArg>("summ").GetValue();
 	EXPECT_EQ(0, summ);
 }
 
 TEST(SPEEDTEST, Lua_2in4000)
 {
-	lua script;
+	LuaScript script;
 	std::string test =
 		"local num = {};\n"
 		"local numIndex = 0;\n"
@@ -55,9 +55,10 @@ TEST(SPEEDTEST, Lua_2in4000)
 		"\n"
 		"num0 = num[1];\n"
 		"num1 = num[2];\n";
-	script.exec(test.c_str());
-	EXPECT_EQ(2, script.get_variable<lua::int_arg_t>("num0").value());
-	EXPECT_EQ(0, script.get_variable<lua::int_arg_t>("num1").value());
+	script.Execute(test.c_str());
+
+	EXPECT_EQ(2, script.GetVariable<LuaScript::Int_LuaArg>("num0").GetValue());
+	EXPECT_EQ(0, script.GetVariable<LuaScript::Int_LuaArg>("num1").GetValue());
 }
 
 

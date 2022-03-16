@@ -7,25 +7,25 @@ Run SPEED_TEST O0
 [----------] Global test environment set-up.
 [----------] 8 tests from SPEEDTEST
 [ RUN      ] SPEEDTEST.Cpp_for10kin10k
-[       OK ] SPEEDTEST.Cpp_for10kin10k (255 ms)
+[       OK ] SPEEDTEST.Cpp_for10kin10k (259 ms)
 [ RUN      ] SPEEDTEST.Cpp_2in4000
-[       OK ] SPEEDTEST.Cpp_2in4000 (137 ms)
+[       OK ] SPEEDTEST.Cpp_2in4000 (140 ms)
 [ RUN      ] SPEEDTEST.Lua_init
 [       OK ] SPEEDTEST.Lua_init (0 ms)
 [ RUN      ] SPEEDTEST.Lua_for10kin10k
-[       OK ] SPEEDTEST.Lua_for10kin10k (9046 ms)
+[       OK ] SPEEDTEST.Lua_for10kin10k (8791 ms)
 [ RUN      ] SPEEDTEST.Lua_2in4000
-[       OK ] SPEEDTEST.Lua_2in4000 (2373 ms)
+[       OK ] SPEEDTEST.Lua_2in4000 (2399 ms)
 [ RUN      ] SPEEDTEST.Python_init
-[       OK ] SPEEDTEST.Python_init (25 ms)
+[       OK ] SPEEDTEST.Python_init (27 ms)
 [ RUN      ] SPEEDTEST.Python_for10kin10k
-[       OK ] SPEEDTEST.Python_for10kin10k (19426 ms)
+[       OK ] SPEEDTEST.Python_for10kin10k (21241 ms)
 [ RUN      ] SPEEDTEST.Python_2in4000
-[       OK ] SPEEDTEST.Python_2in4000 (4290 ms)
-[----------] 8 tests from SPEEDTEST (35552 ms total)
+[       OK ] SPEEDTEST.Python_2in4000 (4648 ms)
+[----------] 8 tests from SPEEDTEST (37505 ms total)
 
 [----------] Global test environment tear-down
-[==========] 8 tests from 1 test suite ran. (35552 ms total)
+[==========] 8 tests from 1 test suite ran. (37505 ms total)
 [  PASSED  ] 8 tests.
 Run SPEED_TEST O3
 [==========] Running 8 tests from 1 test suite.
@@ -34,22 +34,23 @@ Run SPEED_TEST O3
 [ RUN      ] SPEEDTEST.Cpp_for10kin10k
 [       OK ] SPEEDTEST.Cpp_for10kin10k (0 ms)
 [ RUN      ] SPEEDTEST.Cpp_2in4000
-[       OK ] SPEEDTEST.Cpp_2in4000 (30 ms)
+[       OK ] SPEEDTEST.Cpp_2in4000 (32 ms)
 [ RUN      ] SPEEDTEST.Lua_init
 [       OK ] SPEEDTEST.Lua_init (0 ms)
 [ RUN      ] SPEEDTEST.Lua_for10kin10k
-[       OK ] SPEEDTEST.Lua_for10kin10k (3864 ms)
+[       OK ] SPEEDTEST.Lua_for10kin10k (3988 ms)
 [ RUN      ] SPEEDTEST.Lua_2in4000
-[       OK ] SPEEDTEST.Lua_2in4000 (1095 ms)
+[       OK ] SPEEDTEST.Lua_2in4000 (1125 ms)
 [ RUN      ] SPEEDTEST.Python_init
-[       OK ] SPEEDTEST.Python_init (25 ms)
+[       OK ] SPEEDTEST.Python_init (28 ms)
 [ RUN      ] SPEEDTEST.Python_for10kin10k
-[       OK ] SPEEDTEST.Python_for10kin10k (23241 ms)
+[       OK ] SPEEDTEST.Python_for10kin10k (21664 ms)
 [ RUN      ] SPEEDTEST.Python_2in4000
-[       OK ] SPEEDTEST.Python_2in4000 (4857 ms)
-[----------] 8 tests from SPEEDTEST (33112 ms total)
+[       OK ] SPEEDTEST.Python_2in4000 (4581 ms)
+[----------] 8 tests from SPEEDTEST (31419 ms total)
 
 [----------] Global test environment tear-down
-[==========] 8 tests from 1 test suite ran. (33112 ms total)
+[==========] 8 tests from 1 test suite ran. (31419 ms total)
 [  PASSED  ] 8 tests.
+
 

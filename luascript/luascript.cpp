@@ -1,112 +1,196 @@
+﻿// Copyright (c) 2009-2011 by Alexander Demin and Alexei Bezborodov
 #include "stdafx.h"
+
 #include "luascript/luascript.h"
+#include <sstream>
+#include <iostream>
 
-#include <algorithm>
-
-lua::lua() {
-  L_ = lua_open();
-  luaL_openlibs(L_);
+LuaScript::LuaScript() 
+{
+  m_LuaState = lua_open();
+  luaL_openlibs(m_LuaState);
 }
 
-lua::~lua() {
-  lua_close(L_); 
+LuaScript::~LuaScript() 
+{
+  lua_close(m_LuaState); 
 }
 
-void lua::bool_arg_t::unpack(lua_State* L) {
-  if (lua_isboolean(L, lua_gettop(L)))
-    value_ = lua_toboolean(L, lua_gettop(L));
+////////////////////////////////////////////////////////////////////////////////
+
+LuaScript::iLuaArg* LuaScript::Bool_LuaArg::Clone() const
+{ 
+  return new Bool_LuaArg(m_Value);
+}
+
+void LuaScript::Bool_LuaArg::Unpack(lua_State* a_LuaState, int a_ParamIndex)
+{
+  if( lua_isboolean(a_LuaState, a_ParamIndex) )
+    m_Value = lua_toboolean(a_LuaState, a_ParamIndex) ? true : false;
   else
-    throw lua::exception("bool_arg_t::unpack(), value is not boolean");
+    throw LuaException("Bool_LuaArg::Unpack(), value is not boolean");
 }
 
-void lua::bool_arg_t::pack(lua_State* L) {
-  lua_pushboolean(L, value_);
+void LuaScript::Bool_LuaArg::Pack(lua_State* a_LuaState)
+{
+  lua_pushboolean(a_LuaState, m_Value);
 }
 
-std::string lua::bool_arg_t::asString() {
+std::string LuaScript::Bool_LuaArg::AsString() const
+{
   std::stringstream fmt;
-  fmt << value_;
+  fmt << m_Value;
   return fmt.str();
 }
 
-void lua::int_arg_t::unpack(lua_State* L) {
-  if (lua_isnumber(L, lua_gettop(L)))
-    value_ = lua_tointeger(L, lua_gettop(L));
+const LuaScript::Bool_LuaArg::LuaValueType& 
+LuaScript::Bool_LuaArg::GetValue() const
+{ 
+  return m_Value; 
+}
+
+void 
+LuaScript::Bool_LuaArg::SetValue(LuaValueType a_Value)
+{
+  m_Value = a_Value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+LuaScript::iLuaArg* LuaScript::Double_LuaArg::Clone() const
+{ 
+  return new Double_LuaArg(m_Value);
+}
+
+void LuaScript::Double_LuaArg::Unpack(lua_State* a_LuaState, int a_ParamIndex)
+{
+  if( lua_isnumber(a_LuaState, a_ParamIndex) )
+    m_Value = LuaValueType(lua_tonumber(a_LuaState, a_ParamIndex));
   else
-    throw lua::exception("int_arg_t::unpack(), value is not integer");
+    throw LuaException("Double_LuaArg::Unpack(), value is not double");
 }
 
-void lua::int_arg_t::pack(lua_State* L) {
-  lua_pushinteger(L, value_);
+void LuaScript::Double_LuaArg::Pack(lua_State* a_LuaState)
+{
+  lua_pushnumber(a_LuaState, m_Value);
 }
 
-std::string lua::int_arg_t::asString() {
+std::string LuaScript::Double_LuaArg::AsString() const
+{
   std::stringstream fmt;
-  fmt << value_;
+  fmt << m_Value;
   return fmt.str();
 }
 
-void lua::string_arg_t::unpack(lua_State* L) {
-  if (lua_isstring(L, lua_gettop(L)))
-    value_ = lua_tostring(L, lua_gettop(L));
+const LuaScript::Double_LuaArg::LuaValueType& 
+LuaScript::Double_LuaArg::GetValue() const
+{ 
+  return m_Value; 
+}
+
+void 
+LuaScript::Double_LuaArg::SetValue(LuaValueType a_Value)
+{
+  m_Value = a_Value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+LuaScript::iLuaArg* LuaScript::String_LuaArg::Clone() const
+{ 
+  return new String_LuaArg(m_Value);
+}
+
+void LuaScript::String_LuaArg::Unpack(lua_State* a_LuaState, int a_ParamIndex)
+{
+  if( lua_isstring(a_LuaState, a_ParamIndex) )
+    m_Value = lua_tostring(a_LuaState, a_ParamIndex);
   else
-    throw lua::exception("string_arg_t::unpack(), value is not string");
+    throw LuaException("String_LuaArg::Unpack(), value is not string");
 }
 
-void lua::string_arg_t::pack(lua_State* L) {
-  lua_pushstring(L, value_.c_str());
+void LuaScript::String_LuaArg::Pack(lua_State* a_LuaState)
+{
+  lua_pushstring(a_LuaState, m_Value.c_str());
 }
 
-std::string lua::string_arg_t::asString() {
-  return value_;
+std::string LuaScript::String_LuaArg::AsString() const
+{
+  return m_Value;
 }
 
-lua::args_t::args_t(const lua::args_t& rhs) {
+const LuaScript::String_LuaArg::LuaValueType& 
+LuaScript::String_LuaArg::GetValue() const
+{ 
+  return m_Value; 
+}
+
+void LuaScript::String_LuaArg::SetValue(LuaValueType a_Value)
+{
+  m_Value = a_Value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+LuaScript::LuaArgArray::LuaArgArray(const LuaScript::LuaArgArray& rhs)
+{
   clear();
-  for (const_iterator i = rhs.begin(); i != rhs.end(); ++i)
-    push_back((*i)->clone());
+  for( const_iterator i = rhs.begin(); i != rhs.end(); ++i )
+    push_back((*i)->Clone());
 }
 
-lua::args_t::~args_t() {
-  std::for_each(begin(), end(), deleter());
+LuaScript::LuaArgArray::~LuaArgArray()
+{
+  std::for_each(begin(), end(), LuaDeleter());
 }
 
-lua::args_t& lua::args_t::add(arg_t* arg) { 
+LuaScript::LuaArgArray& LuaScript::LuaArgArray::Add(iLuaArg* arg)
+{ 
   push_back(arg); 
   return *this; 
 }
 
-void lua::args_t::unpack(lua_State* L) {
-  for (const_iterator i = begin(); i != end(); ++i)
-    (*i)->unpack(L);
+void LuaScript::LuaArgArray::PopFromLua(lua_State* a_LuaState)
+{
+  for( size_t i = 0; i < size(); ++i )
+    this->at(i)->Unpack(a_LuaState, (int)(i + 1));
 }
 
-void lua::args_t::pack(lua_State* L) {
-  for (args_t::const_iterator i = begin(); i != end(); ++i)
-    (*i)->pack(L);
+void LuaScript::LuaArgArray::PushToLua(lua_State* a_LuaState)
+{
+  for( LuaArgArray::const_iterator i = begin(); i != end(); ++i )
+    (*i)->Pack(a_LuaState);
 }
 
-lua::args_t* lua::args_t::clone() const {
-  lua::args_t* copy = new args_t();
-  for (const_iterator i = begin(); i != end(); ++i)
-    copy->push_back((*i)->clone());
+LuaScript::LuaArgArray* LuaScript::LuaArgArray::Clone() const
+{
+  LuaScript::LuaArgArray* copy = new LuaArgArray();
+  for( const_iterator i = begin(); i != end(); ++i )
+    copy->push_back((*i)->Clone());
   return copy;
 }
 
-lua::exception::exception(const std::string& msg) : msg_(msg), error_(msg) {
-  size_t i = msg.find("]:");
-  if (i == std::string::npos)
-    line_ = 0;
-  else {
-    std::sscanf(msg.c_str() + i + 2, "%d", &line_);
-    i = msg.rfind(": ");
-    if (i != std::string::npos)
-      error_ = msg.substr(i + 2);
+////////////////////////////////////////////////////////////////////////////////
+
+LuaScript::LuaException::LuaException(const std::string& a_Message):
+  m_Message(a_Message),
+  m_Error(a_Message)
+{
+  size_t i = a_Message.find("]:");
+  if( i == std::string::npos )
+    m_Line = 0;
+  else
+  {
+    std::sscanf(a_Message.c_str() + i + 2, "%d", &m_Line);
+    i = a_Message.rfind(": ");
+    if( i != std::string::npos )
+      m_Error = a_Message.substr(i + 2);
   }
 }
 
-void lua::exec(const std::string& script) {
-  int error = luaL_dostring(L_, script.c_str());
-  if (error)
-    throw lua::exception(lua_tostring(L_, -1));
+void LuaScript::Execute(const std::string& a_ScriptString)
+{
+  int nError = luaL_dostring(m_LuaState, a_ScriptString.c_str());
+  if( nError )
+    throw LuaException(lua_tostring(m_LuaState, -1));
 }
