@@ -11,11 +11,10 @@ time cmake ..
 time make -j $1
 
 # Run test
-#echo "Run ctest"
-#time ctest -R regress -j $1
+# ctest -R SPEED_TEST
+echo "Run SPEED_TEST O0"
+./Script_TestO0
 
-# Run unit test
-ctest -R unittest -j
+echo "Run SPEED_TEST O3"
+./Script_TestO3
 
-# Run speed test
-ctest -R speed_test 
